@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force Logout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        button:hover {
+            background: #b91c1c;
+        }
+        .success {
+            color: #059669;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Force Logout Utility</h1>
+        <p>This page will clear all stored authentication data and redirect you to the login page.</p>
+        
+        <button onclick="forceLogout()">Force Logout</button>
+        <button onclick="checkAuth()">Check Current Auth</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function forceLogout() {
+            // Clear all authentication data
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            sessionStorage.clear();
+            
+            // Clear any cookies
+            document.cookie.split(";").forEach(function(c) { 
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+            });
+            
+            document.getElementById('result').innerHTML = '<p class="success">✅ Authentication data cleared successfully!</p>';
+            
+            // Redirect to login page after 2 seconds
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 2000);
+        }
+        
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            let result = '<h3>Current Authentication Status:</h3>';
+            result += `<p><strong>Token:</strong> ${token ? 'Present' : 'Not found'}</p>`;
+            result += `<p><strong>User:</strong> ${user ? 'Present' : 'Not found'}</p>`;
+            
+            if (token) {
+                result += '<p style="color: #dc2626;">⚠️ User appears to be logged in</p>';
+            } else {
+                result += '<p style="color: #059669;">✅ No authentication data found</p>';
+            }
+            
+            document.getElementById('result').innerHTML = result;
+        }
+        
+        // Check auth status on page load
+        checkAuth();
+    </script>
+</body>
+</html> 

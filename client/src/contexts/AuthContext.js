@@ -27,16 +27,11 @@ export const AuthProvider = ({ children }) => {
   // Check if user is logged in on app start
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await axios.get('/api/auth/me');
-          setUser(response.data);
-        } catch (error) {
-          localStorage.removeItem('token');
-          delete axios.defaults.headers.common['Authorization'];
-        }
-      }
+      // Force logout to clear any stored authentication
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      delete axios.defaults.headers.common['Authorization'];
+      setUser(null);
       setLoading(false);
     };
 
@@ -81,9 +76,17 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     delete axios.defaults.headers.common['Authorization'];
     setUser(null);
     toast.success('Logged out successfully');
+  };
+
+  const clearAuth = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    delete axios.defaults.headers.common['Authorization'];
+    setUser(null);
   };
 
   const updateUser = (updatedUser) => {
@@ -96,6 +99,7 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
+    clearAuth,
     updateUser
   };
 

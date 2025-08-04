@@ -70,8 +70,9 @@ const NewLeaveRequest = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-6">
+    <div className="p-4 space-y-4">
+      {/* Header */}
+      <div className="bg-white rounded-lg shadow p-6">
         <h1 className="text-2xl font-bold text-gray-900">New Leave Request</h1>
         <p className="mt-1 text-sm text-gray-500">
           Submit a new leave request for approval.
@@ -101,7 +102,7 @@ const NewLeaveRequest = () => {
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
                 Start Date

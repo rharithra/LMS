@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Authentication</title>
+</head>
+<body>
+    <h1>Clearing authentication...</h1>
+    <script>
+        // Clear all authentication data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Redirect to login page
+        window.location.href = '/login';
+    </script>
+</body>
+</html> 
