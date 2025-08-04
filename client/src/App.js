@@ -12,6 +12,12 @@ import Profile from './pages/Profile';
 import Users from './pages/Users';
 import Departments from './pages/Departments';
 import LeaveTypes from './pages/LeaveTypes';
+import Payroll from './pages/Payroll';
+import PayrollDetails from './pages/PayrollDetails';
+import Performance from './pages/Performance';
+import Attendance from './pages/Attendance';
+import Shifts from './pages/Shifts';
+import AttendanceReports from './pages/AttendanceReports';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -83,6 +89,42 @@ function App() {
               <AdminRoute>
                 <LeaveTypes />
               </AdminRoute>
+            } />
+
+            <Route path="payroll" element={
+              <PrivateRoute>
+                <Payroll />
+              </PrivateRoute>
+            } />
+
+            <Route path="payroll/:id" element={
+              <PrivateRoute>
+                <PayrollDetails />
+              </PrivateRoute>
+            } />
+
+            <Route path="performance" element={
+              <PrivateRoute>
+                <Performance />
+              </PrivateRoute>
+            } />
+
+            <Route path="attendance" element={
+              <PrivateRoute>
+                <Attendance />
+              </PrivateRoute>
+            } />
+
+            <Route path="shifts" element={
+              <AdminRoute>
+                <Shifts />
+              </AdminRoute>
+            } />
+
+            <Route path="attendance-reports" element={
+              <ManagerRoute>
+                <AttendanceReports />
+              </ManagerRoute>
             } />
           </Route>
         </Routes>
