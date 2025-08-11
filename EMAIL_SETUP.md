@@ -1,144 +1,138 @@
-# Email Notification Setup
+# 📧 Email Notification Setup Guide
 
-## Prerequisites
+The Leave Management System now supports real-time email notifications for leave applications and approvals! 
 
-1. **Gmail Account** (or other email provider)
-2. **App Password** (for Gmail, you need to enable 2FA and generate an app password)
+## 🚀 Quick Setup
 
-## Setup Steps
+### Step 1: Get Email Credentials
 
-### 1. Install Dependencies
+**For Gmail (Recommended):**
+1. Go to your Google Account settings
+2. Enable 2-Factor Authentication if not already enabled
+3. Generate an "App Password" specifically for this application:
+   - Go to: https://myaccount.google.com/apppasswords
+   - Select "Mail" and generate a password
+   - Copy the generated 16-character password
 
-```bash
-npm install nodemailer
+**For Other Email Providers:**
+- Use your SMTP settings (host, port, username, password)
+
+### Step 2: Configure Email Settings
+
+Open `server/emailService.js` and update the email configuration:
+
+```javascript
+const emailConfig = {
+  service: 'gmail', // Change if using other provider
+  auth: {
+    user: 'your-email@gmail.com',    // Replace with your email
+    pass: 'your-app-password'        // Replace with your app password
+  }
+};
 ```
 
-### 2. Create Environment Variables
+**Alternative: Use Environment Variables (Recommended for Production)**
 
 Create a `.env` file in the root directory:
-
-```env
-# Email Configuration
+```
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
-
-# Server Configuration
-PORT=5000
-JWT_SECRET=your-secret-key
 ```
 
-### 3. Gmail Setup (Recommended)
+### Step 3: Test Configuration
 
-#### Step 1: Enable 2-Factor Authentication
-1. Go to your Google Account settings
-2. Navigate to Security
-3. Enable 2-Step Verification
+1. Start the server: `npm run backend`
+2. Look for this message in the console:
+   ```
+   📧 Testing email configuration...
+   ✅ Email service is ready to send emails
+   ```
 
-#### Step 2: Generate App Password
-1. Go to Google Account settings
-2. Navigate to Security > 2-Step Verification
-3. Click on "App passwords"
-4. Generate a new app password for "Mail"
-5. Use this password in your `.env` file
+If you see an error instead, check your credentials and try again.
 
-### 4. Alternative Email Providers
+## 📬 How Email Notifications Work
 
-#### Outlook/Hotmail
+### Leave Application
+- **Trigger**: When an employee submits a leave request
+- **Recipients**: All managers and admins in the system
+- **Content**: Beautiful HTML email with leave details and action button
+
+### Leave Approval/Rejection
+- **Trigger**: When a manager approves or rejects a leave request  
+- **Recipients**: The employee who submitted the request
+- **Content**: Styled notification with approval status and details
+
+## 🎨 Email Templates
+
+The system includes professional HTML email templates with:
+- ✅ Responsive design
+- 🎨 Company branding colors
+- 📊 Formatted leave details table
+- 🔗 Direct links to the application
+- 📱 Mobile-friendly layout
+
+## 🔧 Customization
+
+### Change Email Templates
+Edit the templates in `server/emailService.js`:
+- `emailTemplates.leaveApplication` - For new leave requests
+- `emailTemplates.leaveApproval` - For approval/rejection notifications
+
+### Add More Recipients
+Modify the recipient logic in `server/server.js`:
+- Leave applications: Line ~1300
+- Leave approvals: Line ~1480
+
+### Use Different Email Provider
+Update the `emailConfig` object in `server/emailService.js`:
+
 ```javascript
-const transporter = nodemailer.createTransporter({
-  service: 'outlook',
+const emailConfig = {
+  host: 'smtp.your-provider.com',
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: 'your-email@outlook.com',
+    user: 'your-email@domain.com',
     pass: 'your-password'
   }
-});
+};
 ```
 
-#### Yahoo
-```javascript
-const transporter = nodemailer.createTransporter({
-  service: 'yahoo',
-  auth: {
-    user: 'your-email@yahoo.com',
-    pass: 'your-app-password'
-  }
-});
-```
+## 🚨 Troubleshooting
 
-### 5. Test Email Configuration
+### "Invalid login" error with Gmail
+- Make sure 2FA is enabled on your Google account
+- Use an App Password, not your regular password
+- Check that "Less secure app access" is disabled (use App Passwords instead)
 
-Add this route to test email functionality:
+### Emails not sending
+- Check your internet connection
+- Verify email credentials are correct
+- Check spam folder for test emails
+- Review server console for error messages
 
-```javascript
-app.get('/api/test-email', async (req, res) => {
-  try {
-    await sendEmail(
-      'test@example.com',
-      'leaveRequest',
-      ['John Doe', 'Manager Name', 'Annual Leave', 5]
-    );
-    res.json({ message: 'Test email sent successfully' });
-  } catch (error) {
-    res.status(500).json({ error: 'Email test failed' });
-  }
-});
-```
+### "Connection timeout" errors
+- Check firewall settings
+- Try different SMTP port (587, 465, or 25)
+- Verify SMTP server address
 
-## Email Templates
+## 📋 Testing Checklist
 
-The system includes three email templates:
+1. ✅ Server starts without email configuration errors
+2. ✅ Employee can submit leave request
+3. ✅ Manager receives email notification for new leave request
+4. ✅ Manager can approve/reject leave
+5. ✅ Employee receives email notification of approval/rejection
+6. ✅ Emails appear correctly formatted in various email clients
 
-### 1. Leave Request Notification (to Manager)
-- **Subject:** "New Leave Request Submitted"
-- **Content:** Employee details, leave type, duration
-- **Action:** Manager logs in to approve/reject
+## 🛡️ Security Best Practices
 
-### 2. Leave Approved Notification (to Employee)
-- **Subject:** "Leave Request Approved"
-- **Content:** Approval details, leave balance update
-- **Style:** Green theme with checkmark
+- ✅ Use App Passwords instead of main account passwords
+- ✅ Store email credentials in environment variables
+- ✅ Never commit email credentials to version control
+- ✅ Use different email accounts for development and production
+- ✅ Regularly rotate email passwords
 
-### 3. Leave Rejected Notification (to Employee)
-- **Subject:** "Leave Request Rejected"
-- **Content:** Rejection details, reason (if provided)
-- **Style:** Red theme with X mark
+---
 
-## Security Notes
-
-1. **Never commit your `.env` file** to version control
-2. **Use app passwords** instead of your main password
-3. **Enable 2FA** on your email account
-4. **Test thoroughly** before deploying to production
-
-## Troubleshooting
-
-### Common Issues:
-
-1. **"Invalid login" error**
-   - Check your email and password
-   - Ensure you're using an app password for Gmail
-
-2. **"Less secure app access" error**
-   - Enable 2FA and use app passwords
-   - Don't use your main password
-
-3. **"Connection timeout" error**
-   - Check your internet connection
-   - Verify email provider settings
-
-### Testing:
-
-1. **Start the server:** `npm start`
-2. **Test email:** Visit `/api/test-email`
-3. **Submit leave request** and check manager's email
-4. **Approve/reject leave** and check employee's email
-
-## Production Deployment
-
-For production, consider:
-
-1. **Email service providers** like SendGrid, Mailgun, or AWS SES
-2. **Environment-specific configurations**
-3. **Email templates** stored in database
-4. **Email queuing** for high-volume applications
-5. **Email tracking** and analytics 
+**Need Help?** Check the server console logs for detailed error messages when emails fail to send. 
