@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
+import { useMutation, useQueryClient, useQuery } from 'react-query';
+import { api } from '../utils/api';
 import toast from 'react-hot-toast';
 
 const DepartmentModal = ({ department, isOpen, onClose, mode = 'add' }) => {
@@ -8,10 +8,29 @@ const DepartmentModal = ({ department, isOpen, onClose, mode = 'add' }) => {
     name: '',
     code: '',
     description: '',
+    managerId: '',
     isActive: true
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
+
+  // Fetch managers for dropdown
+  const { data: users, isLoading: usersLoading, error: usersError } = useQuery('users', async () => {
+    const response = await api.get('/api/users');
+    // Backend returns { users: [...] }, so we need to extract the users array
+    return response.data.users || response.data;
+  }, {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    onError: (error) => {
+      console.error('Failed to fetch users:', error);
+    }
+  });
+
+  // Ensure users is always an array before filtering
+  const managers = Array.isArray(users) 
+    ? users.filter(user => user.role === 'manager' || user.role === 'admin') 
+    : [];
 
   useEffect(() => {
     if (department && mode === 'edit') {
@@ -19,6 +38,7 @@ const DepartmentModal = ({ department, isOpen, onClose, mode = 'add' }) => {
         name: department.name || '',
         code: department.code || '',
         description: department.description || '',
+        managerId: department.managerId || '',
         isActive: department.isActive !== undefined ? department.isActive : true
       });
     } else {
@@ -26,6 +46,7 @@ const DepartmentModal = ({ department, isOpen, onClose, mode = 'add' }) => {
         name: '',
         code: '',
         description: '',
+        managerId: '',
         isActive: true
       });
     }
@@ -34,21 +55,47 @@ const DepartmentModal = ({ department, isOpen, onClose, mode = 'add' }) => {
   const mutation = useMutation(
     async (data) => {
       if (mode === 'edit') {
-        const response = await axios.put(`/api/departments/${department.id}`, data);
+        const response = await api.put(`/api/departments/${department.id}`, data);
         return response.data;
       } else {
-        const response = await axios.post('/api/departments', data);
+        const response = await api.post('/api/departments', data);
         return response.data;
       }
     },
     {
-      onSuccess: () => {
+      onSuccess: (response) => {
         queryClient.invalidateQueries('departments');
-        toast.success(`Department ${mode === 'edit' ? 'updated' : 'created'} successfully!`);
+        const successMessage = response.data?.message || `Department ${mode === 'edit' ? 'updated' : 'created'} successfully!`;
+        toast.success(successMessage);
         onClose();
       },
       onError: (error) => {
-        toast.error(error.response?.data?.message || `Failed to ${mode} department`);
+        const errorData = error.response?.data;
+        let errorMessage = `Failed to ${mode} department`;
+        
+        if (errorData?.message) {
+          errorMessage = errorData.message;
+        } else if (errorData?.error) {
+          switch (errorData.error) {
+            case 'DUPLICATE_NAME':
+              errorMessage = 'A department with this name already exists';
+              break;
+            case 'DUPLICATE_CODE':
+              errorMessage = 'A department with this code already exists';
+              break;
+            case 'VALIDATION_ERROR':
+              errorMessage = `Invalid ${errorData.field}: ${errorData.message}`;
+              break;
+            case 'INSUFFICIENT_PERMISSIONS':
+              errorMessage = 'You don\'t have permission to perform this action';
+              break;
+            default:
+              errorMessage = errorData.message || errorMessage;
+          }
+        }
+        
+        toast.error(errorMessage);
+        console.error('Department operation error:', errorData);
       }
     }
   );
@@ -70,7 +117,7 @@ const DepartmentModal = ({ department, isOpen, onClose, mode = 'add' }) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : (name === 'managerId' ? (value === '' ? null : parseInt(value)) : value)
     }));
   };
 
@@ -128,6 +175,38 @@ const DepartmentModal = ({ department, isOpen, onClose, mode = 'add' }) => {
                 rows={3}
                 placeholder="Department description..."
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Department Manager
+              </label>
+              <select
+                name="managerId"
+                value={formData.managerId}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={usersLoading}
+              >
+                <option value="">
+                  {usersLoading 
+                    ? "Loading managers..." 
+                    : usersError 
+                    ? "Error loading managers" 
+                    : "Select a manager (optional)"
+                  }
+                </option>
+                {managers.map(manager => (
+                  <option key={manager.id} value={manager.id}>
+                    {manager.firstName} {manager.lastName} ({manager.role})
+                  </option>
+                ))}
+              </select>
+              {usersError && (
+                <p className="mt-1 text-sm text-red-600">
+                  Failed to load managers. You can still create the department without selecting a manager.
+                </p>
+              )}
             </div>
 
             <div className="flex items-center">

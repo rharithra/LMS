@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import axios from 'axios';
+import { api } from '../utils/api';
 import DepartmentModal from '../components/DepartmentModal';
 
 const Departments = () => {
@@ -8,15 +8,39 @@ const Departments = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
 
-  const { data: departments, isLoading } = useQuery('departments', async () => {
-    const response = await axios.get('/api/departments');
+  const { data: departments, isLoading, error } = useQuery('departments', async () => {
+    const response = await api.get('/api/departments');
     return response.data;
+  }, {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    onError: (error) => {
+      console.error('Failed to fetch departments:', error);
+    }
   });
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <p className="ml-4 text-gray-600">Loading departments...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Failed to load departments</p>
+          <p className="text-gray-500 text-sm">Please check your connection and try again</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }

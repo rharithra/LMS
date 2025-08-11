@@ -23,28 +23,34 @@ const Performance = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   const { data: performanceStats } = useQuery('performanceStats', () =>
-    api.get('/api/performance/stats').then(res => res.data)
-  );
+    api.get('/api/performance/stats').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch performance stats:', error)
+  });
 
-  const { data: kpis } = useQuery('kpis', () =>
-    api.get('/api/kpis').then(res => res.data)
-  );
+  const { data: kpis = [] } = useQuery('kpis', () =>
+    api.get('/api/kpis').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch KPIs:', error)
+  });
 
-  const { data: goals } = useQuery('performanceGoals', () =>
-    api.get('/api/performance-goals').then(res => res.data)
-  );
+  const { data: goals = [] } = useQuery('performanceGoals', () =>
+    api.get('/api/performance-goals').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch goals:', error)
+  });
 
-  const { data: reviews } = useQuery('performanceReviews', () =>
-    api.get('/api/performance-reviews').then(res => res.data)
-  );
+  const { data: reviews = [] } = useQuery('performanceReviews', () =>
+    api.get('/api/performance-reviews').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch reviews:', error)
+  });
 
-  const { data: promotions } = useQuery('promotions', () =>
-    api.get('/api/promotions').then(res => res.data)
-  );
+  const { data: promotions = [] } = useQuery('promotions', () =>
+    api.get('/api/promotions').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch promotions:', error)
+  });
 
   const { data: usersData } = useQuery('users', () =>
-    api.get('/api/users').then(res => res.data)
-  );
+    api.get('/api/users').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch users:', error)
+  });
 
   const handleStartReview = (employee) => {
     setSelectedEmployee(employee);
@@ -196,7 +202,7 @@ const Performance = () => {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Performance Reviews</h3>
                   <div className="space-y-3">
-                    {performanceStats?.recentReviews?.map((review) => (
+                    {(performanceStats?.recentReviews || []).map((review) => (
                       <div key={review.id} className="p-3 bg-white rounded border">
                         <div className="flex justify-between items-start">
                           <div>
@@ -311,7 +317,7 @@ const Performance = () => {
                       <div>
                         <h5 className="font-medium text-gray-900 mb-2">Strengths</h5>
                         <ul className="text-sm text-gray-600 space-y-1">
-                          {review.strengths.map((strength, index) => (
+                          {(review.strengths || []).map((strength, index) => (
                             <li key={index} className="flex items-center">
                               <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
                               {strength}
@@ -322,7 +328,7 @@ const Performance = () => {
                       <div>
                         <h5 className="font-medium text-gray-900 mb-2">Areas for Improvement</h5>
                         <ul className="text-sm text-gray-600 space-y-1">
-                          {review.areasOfImprovement.map((area, index) => (
+                          {(review.areasOfImprovement || []).map((area, index) => (
                             <li key={index} className="flex items-center">
                               <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
                               {area}

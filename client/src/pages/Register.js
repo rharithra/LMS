@@ -1,20 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
+import { api } from '../utils/api';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, user, loading } = useAuth();
   const navigate = useNavigate();
 
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
+
   const { data: departments } = useQuery('departments', async () => {
-    const response = await axios.get('/api/departments');
+    const response = await api.get('/api/departments');
     return response.data;
+  }, {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    enabled: !loading, // Only fetch departments when auth loading is complete
+    onError: (error) => {
+      console.error('Failed to fetch departments:', error);
+      // Don't redirect on department fetch error
+    }
   });
 
   const {
@@ -35,6 +50,18 @@ const Register = () => {
       navigate('/dashboard');
     }
   };
+
+  // Debug info (can be removed once everything works)
+  // console.log('Register component render:', { loading, user: !!user, departments: departments?.length });
+  
+  // Show loading state to prevent flash
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -147,7 +174,7 @@ const Register = () => {
               >
                 <option value="">Select a department</option>
                 {departments?.map((dept) => (
-                  <option key={dept._id} value={dept._id}>
+                  <option key={dept.id} value={dept.name}>
                     {dept.name}
                   </option>
                 ))}

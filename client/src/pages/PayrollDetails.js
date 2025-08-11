@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { 
@@ -10,9 +10,12 @@ import {
   CalculatorIcon
 } from '@heroicons/react/24/outline';
 import { api } from '../utils/api';
+import { generatePayslipPDF } from '../utils/pdfGenerator';
+import toast from 'react-hot-toast';
 
 const PayrollDetails = () => {
   const { id } = useParams();
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   const { data: payroll, isLoading, error } = useQuery(
     ['payroll', id],
@@ -32,6 +35,24 @@ const PayrollDetails = () => {
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
     return months[month - 1];
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!payroll) {
+      toast.error('No payroll data available');
+      return;
+    }
+
+    setIsGeneratingPDF(true);
+    try {
+      await generatePayslipPDF(payroll);
+      toast.success('PDF downloaded successfully!');
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      toast.error('Failed to download PDF. Please try again.');
+    } finally {
+      setIsGeneratingPDF(false);
+    }
   };
 
   if (isLoading) {
@@ -346,14 +367,12 @@ const PayrollDetails = () => {
             Print Payslip
           </button>
           <button
-            onClick={() => {
-              // Download as PDF functionality can be added here
-              alert('PDF download functionality will be implemented');
-            }}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+            onClick={handleDownloadPDF}
+            disabled={isGeneratingPDF}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <DocumentTextIcon className="h-4 w-4" />
-            Download PDF
+            {isGeneratingPDF ? 'Generating PDF...' : 'Download PDF'}
           </button>
         </div>
       </div>

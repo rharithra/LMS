@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
+import { api } from '../utils/api';
 import toast from 'react-hot-toast';
 
 const UserModal = ({ user, isOpen, onClose, mode = 'add', departments = [], managers = [] }) => {
@@ -8,6 +8,7 @@ const UserModal = ({ user, isOpen, onClose, mode = 'add', departments = [], mana
     firstName: '',
     lastName: '',
     email: '',
+    password: '',
     employeeId: '',
     role: 'employee',
     department: '',
@@ -27,6 +28,7 @@ const UserModal = ({ user, isOpen, onClose, mode = 'add', departments = [], mana
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         email: user.email || '',
+        password: '', // Don't populate password for edit mode
         employeeId: user.employeeId || '',
         role: user.role || 'employee',
         department: user.department || '',
@@ -38,6 +40,7 @@ const UserModal = ({ user, isOpen, onClose, mode = 'add', departments = [], mana
         firstName: '',
         lastName: '',
         email: '',
+        password: '',
         employeeId: '',
         role: 'employee',
         department: '',
@@ -54,10 +57,10 @@ const UserModal = ({ user, isOpen, onClose, mode = 'add', departments = [], mana
   const mutation = useMutation(
     async (data) => {
       if (mode === 'edit') {
-        const response = await axios.put(`/api/users/${user.id}`, data);
+        const response = await api.put(`/api/users/${user.id}`, data);
         return response.data;
       } else {
-        const response = await axios.post('/api/users', data);
+        const response = await api.post('/api/users', data);
         return response.data;
       }
     },
@@ -159,6 +162,21 @@ const UserModal = ({ user, isOpen, onClose, mode = 'add', departments = [], mana
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="john.doe@company.com"
                 required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Password {mode === 'add' ? '*' : '(leave blank to keep current)'}
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={mode === 'add' ? 'Enter password' : 'Leave blank to keep current password'}
+                required={mode === 'add'}
               />
             </div>
 

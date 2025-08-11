@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
+import { api } from '../utils/api';
 import LeaveTypeModal from '../components/LeaveTypeModal';
 
 const LeaveTypes = () => {
@@ -10,9 +10,15 @@ const LeaveTypes = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
 
-  const { data: leaveTypes, isLoading } = useQuery('leaveTypes', async () => {
-    const response = await axios.get('/api/leave-types');
+  const { data: leaveTypes, isLoading, error } = useQuery('leaveTypes', async () => {
+    const response = await api.get('/api/leave-types');
     return response.data;
+  }, {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    onError: (error) => {
+      console.error('Failed to fetch leave types:', error);
+    }
   });
 
   const getColorClass = (color) => {

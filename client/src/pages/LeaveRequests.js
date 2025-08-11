@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
+import { api } from '../utils/api';
 import { format } from 'date-fns';
 import LeaveApprovalModal from '../components/LeaveApprovalModal';
 
@@ -11,9 +11,15 @@ const LeaveRequests = () => {
   const [selectedLeave, setSelectedLeave] = useState(null);
   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
 
-  const { data: leaveData, isLoading } = useQuery('leaves', async () => {
-    const response = await axios.get('/api/leaves');
+  const { data: leaveData, isLoading, error } = useQuery('leaves', async () => {
+    const response = await api.get('/api/leaves');
     return response.data;
+  }, {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    onError: (error) => {
+      console.error('Failed to fetch leaves:', error);
+    }
   });
 
   const getStatusClass = (status) => {

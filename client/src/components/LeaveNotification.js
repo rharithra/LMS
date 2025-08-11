@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import axios from 'axios';
+import { api } from '../utils/api';
 import toast from 'react-hot-toast';
 import { CheckCircleIcon, XCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
@@ -9,13 +9,25 @@ const LeaveNotification = ({ user }) => {
   const [lastPendingCount, setLastPendingCount] = useState(0);
 
   const { data: leaveData } = useQuery('leaves', async () => {
-    const response = await axios.get('/api/leaves');
+    const response = await api.get('/api/leaves');
     return response.data;
+  }, {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    onError: (error) => {
+      console.error('Failed to fetch leaves:', error);
+    }
   });
 
   const { data: statsData } = useQuery('leaveStats', async () => {
-    const response = await axios.get('/api/leaves/stats');
+    const response = await api.get('/api/leaves/stats');
     return response.data;
+  }, {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    onError: (error) => {
+      console.error('Failed to fetch leave stats:', error);
+    }
   });
 
   useEffect(() => {

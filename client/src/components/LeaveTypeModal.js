@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
+import { api } from '../utils/api';
 import toast from 'react-hot-toast';
 
 const LeaveTypeModal = ({ leaveType, isOpen, onClose, mode = 'add' }) => {
@@ -51,10 +51,10 @@ const LeaveTypeModal = ({ leaveType, isOpen, onClose, mode = 'add' }) => {
   const mutation = useMutation(
     async (data) => {
       if (mode === 'edit') {
-        const response = await axios.put(`/api/leave-types/${leaveType.id}`, data);
+        const response = await api.put(`/api/leave-types/${leaveType.id}`, data);
         return response.data;
       } else {
-        const response = await axios.post('/api/leave-types', data);
+        const response = await api.post('/api/leave-types', data);
         return response.data;
       }
     },

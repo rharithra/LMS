@@ -1,8 +1,11 @@
 import axios from 'axios';
 
 // Create axios instance with base configuration
+const apiURL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+console.log(' API connecting to:', apiURL);
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000',
+  baseURL: apiURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -29,10 +32,14 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Unauthorized - redirect to login
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      // Don't redirect if we're on login or register pages
+      const currentPath = window.location.pathname;
+      if (currentPath !== '/login' && currentPath !== '/register' && currentPath !== '/signup') {
+        // Unauthorized - redirect to login
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
+import { api } from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -16,22 +16,43 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Set up axios defaults
+  // Set up api defaults
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
   }, []);
 
   // Check if user is logged in on app start
   useEffect(() => {
     const checkAuth = async () => {
-      // Force logout to clear any stored authentication
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      delete axios.defaults.headers.common['Authorization'];
-      setUser(null);
+      const token = localStorage.getItem('token');
+      const userData = localStorage.getItem('user');
+      
+      console.log('AuthContext checkAuth:', { token: !!token, userData: !!userData });
+      
+      if (token) {
+        try {
+          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          // You could add a token validation API call here if needed
+          if (userData) {
+            const parsedUser = JSON.parse(userData);
+            console.log('Setting user from localStorage:', parsedUser);
+            setUser(parsedUser);
+          }
+        } catch (error) {
+          console.error('Auth check failed:', error);
+          // Clear invalid auth data
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          delete api.defaults.headers.common['Authorization'];
+          setUser(null);
+        }
+      } else {
+        console.log('No token found, user will be null');
+      }
+      
       setLoading(false);
     };
 
@@ -40,11 +61,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
+      const response = await api.post('/api/auth/login', { email, password });
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      localStorage.setItem('user', JSON.stringify(user));
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setUser(user);
       
       toast.success('Login successful!');
@@ -58,11 +80,12 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('/api/auth/register', userData);
+      const response = await api.post('/api/auth/register', userData);
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      localStorage.setItem('user', JSON.stringify(user));
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setUser(user);
       
       toast.success('Registration successful!');
@@ -77,7 +100,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    delete api.defaults.headers.common['Authorization'];
     setUser(null);
     toast.success('Logged out successfully');
   };
@@ -85,7 +108,7 @@ export const AuthProvider = ({ children }) => {
   const clearAuth = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    delete api.defaults.headers.common['Authorization'];
     setUser(null);
   };
 
@@ -96,6 +119,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loading,
+    token: localStorage.getItem('token'),
     login,
     register,
     logout,

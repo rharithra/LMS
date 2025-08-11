@@ -1,16 +1,22 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import axios from 'axios';
+import { api } from '../utils/api';
 import { format } from 'date-fns';
 
 const LeaveDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data: leave, isLoading } = useQuery(['leave', id], async () => {
-    const response = await axios.get(`/api/leaves/${id}`);
+  const { data: leave, isLoading, error } = useQuery(['leave', id], async () => {
+    const response = await api.get(`/api/leaves/${id}`);
     return response.data;
+  }, {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    onError: (error) => {
+      console.error('Failed to fetch leave details:', error);
+    }
   });
 
   const getStatusClass = (status) => {

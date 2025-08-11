@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
+import { api } from '../utils/api';
 import toast from 'react-hot-toast';
 
 const LeaveApprovalModal = ({ leave, isOpen, onClose, onApproved }) => {
@@ -11,7 +11,7 @@ const LeaveApprovalModal = ({ leave, isOpen, onClose, onApproved }) => {
 
   const approveMutation = useMutation(
     async ({ id, approvalData }) => {
-      const response = await axios.put(`/api/leaves/${id}/approve`, approvalData);
+      const response = await api.put(`/api/leaves/${id}/approve`, approvalData);
       return response.data;
     },
     {
