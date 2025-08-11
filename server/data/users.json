@@ -1,0 +1,247 @@
+[
+  {
+    "id": 1,
+    "firstName": "Admin",
+    "lastName": "User",
+    "email": "admin@company.com",
+    "password": "password123",
+    "employeeId": "EMP001",
+    "role": "admin",
+    "department": "IT",
+    "leaveBalance": {
+      "annual": 18,
+      "sick": 10,
+      "personal": 5,
+      "maternity": 90,
+      "paternity": 15
+    },
+    "salary": {
+      "basicSalary": 80000,
+      "hra": 32000,
+      "da": 24000,
+      "ta": 8000,
+      "pf": 9600,
+      "tax": 12000,
+      "performanceIncentive": 10000,
+      "specialAllowance": 5000,
+      "medicalAllowance": 3000,
+      "conveyanceAllowance": 2000,
+      "foodAllowance": 1500,
+      "otherAllowances": 0,
+      "grossSalary": 154000,
+      "totalDeductions": 21600,
+      "netSalary": 132400
+    },
+    "payrollInfo": {
+      "bankName": "HDFC Bank",
+      "accountNumber": "1234567890",
+      "ifscCode": "HDFC0001234"
+    }
+  },
+  {
+    "id": 2,
+    "firstName": "Manager",
+    "lastName": "User",
+    "email": "manager@company.com",
+    "password": "password123",
+    "employeeId": "EMP002",
+    "role": "manager",
+    "department": "HR",
+    "leaveBalance": {
+      "annual": 18,
+      "sick": 8,
+      "personal": 4,
+      "maternity": 90,
+      "paternity": 15
+    },
+    "salary": {
+      "basicSalary": 65000,
+      "hra": 26000,
+      "da": 19500,
+      "ta": 6500,
+      "pf": 7800,
+      "tax": 9750,
+      "performanceIncentive": 8000,
+      "specialAllowance": 4000,
+      "medicalAllowance": 2500,
+      "conveyanceAllowance": 1800,
+      "foodAllowance": 1200,
+      "otherAllowances": 0,
+      "grossSalary": 125000,
+      "totalDeductions": 17550,
+      "netSalary": 107450
+    },
+    "payrollInfo": {
+      "bankName": "HDFC Bank",
+      "accountNumber": "1234567891",
+      "ifscCode": "HDFC0001234"
+    }
+  },
+  {
+    "id": 3,
+    "firstName": "Employee",
+    "lastName": "User",
+    "email": "employee@company.com",
+    "password": "password123",
+    "employeeId": "EMP003",
+    "role": "employee",
+    "department": "Engineering",
+    "manager": 2,
+    "leaveBalance": {
+      "annual": 15,
+      "sick": 10,
+      "personal": 3,
+      "maternity": 90,
+      "paternity": 15
+    },
+    "salary": {
+      "basicSalary": 50000,
+      "hra": 20000,
+      "da": 15000,
+      "ta": 5000,
+      "pf": 6000,
+      "tax": 8000,
+      "performanceIncentive": 5000,
+      "specialAllowance": 3000,
+      "medicalAllowance": 2000,
+      "conveyanceAllowance": 1500,
+      "foodAllowance": 1000,
+      "otherAllowances": 0,
+      "grossSalary": 95000,
+      "totalDeductions": 14000,
+      "netSalary": 81000
+    },
+    "payrollInfo": {
+      "bankName": "HDFC Bank",
+      "accountNumber": "1234567892",
+      "ifscCode": "HDFC0001234"
+    }
+  },
+  {
+    "id": 4,
+    "firstName": "Harithra",
+    "lastName": "R",
+    "email": "abc@gmail.com",
+    "password": "123456",
+    "employeeId": "EMP005",
+    "role": "employee",
+    "department": "IT",
+    "manager": "2",
+    "leaveBalance": {
+      "annual": 20,
+      "sick": 10,
+      "personal": 5,
+      "maternity": 90,
+      "paternity": 15
+    },
+    "salary": {
+      "basicSalary": 50000,
+      "hra": 20000,
+      "da": 15000,
+      "ta": 5000,
+      "pf": 6000,
+      "tax": 8000
+    },
+    "payrollInfo": {
+      "bankName": "HDFC Bank",
+      "accountNumber": "1234567890",
+      "ifscCode": "HDFC0001234"
+    },
+    "createdAt": "2025-08-11T04:18:08.419Z"
+  },
+  {
+    "id": 5,
+    "firstName": "Suba",
+    "lastName": "R",
+    "email": "haribavi99@gmail.com",
+    "password": "12345678",
+    "employeeId": "EMP006",
+    "role": "employee",
+    "department": "Finance",
+    "manager": "2",
+    "leaveBalance": {
+      "annual": 18,
+      "sick": 10,
+      "personal": 5,
+      "maternity": 90,
+      "paternity": 15
+    },
+    "salary": {
+      "basicSalary": 50000,
+      "hra": 20000,
+      "da": 15000,
+      "ta": 5000,
+      "pf": 6000,
+      "tax": 8000
+    },
+    "payrollInfo": {
+      "bankName": "HDFC Bank",
+      "accountNumber": "1234567890",
+      "ifscCode": "HDFC0001234"
+    },
+    "createdAt": "2025-08-11T08:57:42.189Z"
+  },
+  {
+    "id": 6,
+    "firstName": "Ravichandran",
+    "lastName": "N",
+    "email": "mail.ravichandrandce@gmail.com",
+    "password": "123456789",
+    "employeeId": "EMP007",
+    "role": "employee",
+    "department": "Engineering",
+    "position": "Manager",
+    "manager": null,
+    "leaveBalance": {
+      "annual": 20,
+      "sick": 10,
+      "personal": 5,
+      "maternity": 90,
+      "paternity": 15
+    },
+    "salary": {
+      "basicSalary": 0,
+      "allowances": {},
+      "deductions": {}
+    },
+    "payrollInfo": {}
+  },
+  {
+    "id": 7,
+    "firstName": "Dhiliban",
+    "lastName": "A",
+    "email": "adhiliban@gmail.com",
+    "password": "987654321",
+    "employeeId": "EMP008",
+    "role": "employee",
+    "department": "Sales",
+    "position": "Manager",
+    "manager": null,
+    "leaveBalance": {
+      "annual": 16,
+      "sick": 10,
+      "personal": 5,
+      "maternity": 90,
+      "paternity": 15
+    },
+    "salary": {
+      "basicSalary": 100000,
+      "hra": 50000,
+      "da": 12000,
+      "ta": 10000,
+      "pf": 1350,
+      "tax": 3000,
+      "performanceIncentive": 5000,
+      "specialAllowance": 2000,
+      "medicalAllowance": 5000,
+      "conveyanceAllowance": 3000,
+      "foodAllowance": 1000,
+      "otherAllowances": 0,
+      "grossSalary": 188000,
+      "totalDeductions": 4350,
+      "netSalary": 183650
+    },
+    "payrollInfo": {},
+    "updatedAt": "2025-08-11T11:40:09.250Z"
+  }
+]

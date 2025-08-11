@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "employeeId": 1,
+    "date": "2025-08-11",
+    "checkIn": "09:48",
+    "status": "present",
+    "workingHours": 0
+  },
+  {
+    "id": 2,
+    "employeeId": 6,
+    "date": "2025-08-11",
+    "checkIn": "16:44",
+    "status": "present",
+    "workingHours": 0
+  }
+]

@@ -1,0 +1,163 @@
+[
+  {
+    "id": 1,
+    "employeeId": 3,
+    "leaveType": "annual",
+    "startDate": "2025-08-15",
+    "endDate": "2025-08-17",
+    "duration": 3,
+    "reason": "Family vacation",
+    "status": "approved",
+    "createdAt": "2025-08-10T10:00:00.000Z",
+    "employee": {
+      "id": 3,
+      "firstName": "Employee",
+      "lastName": "User",
+      "employeeId": "EMP003",
+      "department": "Engineering"
+    },
+    "approvedBy": 2,
+    "approvedAt": "2025-08-11T07:58:37.845Z"
+  },
+  {
+    "id": 2,
+    "employeeId": 3,
+    "leaveType": "sick",
+    "startDate": "2025-08-05",
+    "endDate": "2025-08-06",
+    "duration": 2,
+    "reason": "Medical appointment",
+    "status": "approved",
+    "approvedBy": 2,
+    "approvedAt": "2025-08-04T14:30:00.000Z",
+    "createdAt": "2025-08-03T09:15:00.000Z",
+    "employee": {
+      "id": 3,
+      "firstName": "Employee",
+      "lastName": "User",
+      "employeeId": "EMP003",
+      "department": "Engineering"
+    }
+  },
+  {
+    "id": 3,
+    "employeeId": 3,
+    "leaveType": "personal",
+    "startDate": "2025-07-20",
+    "endDate": "2025-07-20",
+    "duration": 1,
+    "reason": "Personal matter",
+    "status": "rejected",
+    "approvedBy": 2,
+    "approvedAt": "2025-07-18T16:45:00.000Z",
+    "rejectionReason": "Insufficient notice period",
+    "createdAt": "2025-07-17T11:20:00.000Z",
+    "employee": {
+      "id": 3,
+      "firstName": "Employee",
+      "lastName": "User",
+      "employeeId": "EMP003",
+      "department": "Engineering"
+    }
+  },
+  {
+    "id": 4,
+    "employeeId": 3,
+    "leaveType": "annual",
+    "startDate": "2025-08-11",
+    "endDate": "2025-08-12",
+    "reason": "Family vacation",
+    "duration": 2,
+    "status": "approved",
+    "createdAt": "2025-08-11T05:40:09.431Z",
+    "employee": {
+      "id": 3,
+      "firstName": "Employee",
+      "lastName": "User",
+      "employeeId": "EMP003",
+      "department": "Engineering"
+    },
+    "approvedBy": 2,
+    "approvedAt": "2025-08-11T05:40:52.709Z"
+  },
+  {
+    "id": 5,
+    "employeeId": 3,
+    "leaveType": "personal",
+    "startDate": "2025-08-18",
+    "endDate": "2025-08-19",
+    "reason": "Get Together",
+    "duration": 2,
+    "status": "approved",
+    "createdAt": "2025-08-11T06:59:26.339Z",
+    "employee": {
+      "id": 3,
+      "firstName": "Employee",
+      "lastName": "User",
+      "employeeId": "EMP003",
+      "department": "Engineering"
+    },
+    "approvedBy": 2,
+    "approvedAt": "2025-08-11T08:18:04.351Z"
+  },
+  {
+    "id": 6,
+    "employeeId": 5,
+    "leaveType": "annual",
+    "startDate": "2025-08-12",
+    "endDate": "2025-08-13",
+    "reason": "Family vacation",
+    "duration": 2,
+    "status": "approved",
+    "createdAt": "2025-08-11T08:58:17.723Z",
+    "employee": {
+      "id": 5,
+      "firstName": "Suba",
+      "lastName": "R",
+      "employeeId": "EMP006",
+      "department": "Finance"
+    },
+    "approvedBy": 1,
+    "approvedAt": "2025-08-11T09:00:12.849Z"
+  },
+  {
+    "id": 7,
+    "employeeId": 1,
+    "leaveType": "annual",
+    "startDate": "2025-08-25",
+    "endDate": "2025-08-26",
+    "reason": "Marriage ceremony",
+    "duration": 2,
+    "status": "approved",
+    "createdAt": "2025-08-11T09:56:46.155Z",
+    "employee": {
+      "id": 1,
+      "firstName": "Admin",
+      "lastName": "User",
+      "employeeId": "EMP001",
+      "department": "IT"
+    },
+    "approvedBy": 1,
+    "approvedAt": "2025-08-11T11:47:30.455Z"
+  },
+  {
+    "id": 8,
+    "employeeId": 7,
+    "leaveType": "annual",
+    "startDate": "2025-08-11",
+    "endDate": "2025-08-12",
+    "reason": "Family vacation",
+    "duration": 2,
+    "status": "approved",
+    "createdAt": "2025-08-11T11:49:30.395Z",
+    "employee": {
+      "id": 7,
+      "firstName": "Dhiliban",
+      "lastName": "A",
+      "employeeId": "EMP008",
+      "department": "Sales"
+    },
+    "approvedBy": 1,
+    "approvedAt": "2025-08-11T11:51:21.062Z"
+  }
+]

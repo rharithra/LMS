@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "name": "Morning Shift",
+    "startTime": "09:00",
+    "endTime": "17:00",
+    "breakTime": 60,
+    "totalHours": 7,
+    "description": "Standard morning shift for office workers",
+    "color": "#3B82F6",
+    "department": "IT",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "Evening Shift",
+    "startTime": "17:00",
+    "endTime": "01:00",
+    "breakTime": 60,
+    "totalHours": 7,
+    "description": "Evening shift for customer support",
+    "color": "#10B981",
+    "department": "HR",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "name": "Night Shift",
+    "startTime": "22:00",
+    "endTime": "06:00",
+    "breakTime": 60,
+    "totalHours": 7,
+    "description": "Night shift for operations team",
+    "color": "#8B5CF6",
+    "department": "Engineering",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "name": "Intermediate Shift",
+    "startTime": "14:00",
+    "endTime": "19:00",
+    "breakTime": 15,
+    "totalHours": 4.75,
+    "description": "",
+    "color": "#3B82F6",
+    "department": "",
+    "isActive": true,
+    "createdAt": "2025-08-11T04:17:38.467Z"
+  }
+]

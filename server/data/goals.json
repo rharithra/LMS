@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "employeeId": 3,
+    "title": "Complete React Training",
+    "description": "Finish advanced React course and implement learned concepts",
+    "category": "Professional Development",
+    "priority": "high",
+    "status": "in_progress",
+    "progress": 60,
+    "targetDate": "2024-12-31",
+    "setBy": 2,
+    "createdAt": "2024-01-15T00:00:00.000Z",
+    "notes": "Making good progress on Redux modules"
+  },
+  {
+    "id": 2,
+    "employeeId": 3,
+    "title": "Improve Customer Satisfaction Score",
+    "description": "Increase team customer satisfaction score to 95%",
+    "category": "Performance",
+    "priority": "medium",
+    "status": "pending",
+    "progress": 25,
+    "targetDate": "2024-06-30",
+    "setBy": 2,
+    "createdAt": "2024-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "employeeId": "4",
+    "title": "complete project deliverables on time ",
+    "description": "Complete 10 tickets by moth end",
+    "category": "Project Management",
+    "priority": "medium",
+    "setBy": 1,
+    "status": "pending",
+    "progress": 0,
+    "createdAt": "2025-08-11T12:09:37.369Z"
+  }
+]

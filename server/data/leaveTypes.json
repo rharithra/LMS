@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Annual Leave",
+    "code": "annual",
+    "maxDays": 20,
+    "carryForward": true,
+    "isActive": true
+  },
+  {
+    "id": 2,
+    "name": "Sick Leave",
+    "code": "sick",
+    "maxDays": 10,
+    "carryForward": false,
+    "isActive": true
+  },
+  {
+    "id": 3,
+    "name": "Personal Leave",
+    "code": "personal",
+    "maxDays": 5,
+    "carryForward": false,
+    "isActive": true
+  },
+  {
+    "id": 4,
+    "name": "Maternity Leave",
+    "code": "maternity",
+    "maxDays": 90,
+    "carryForward": false,
+    "isActive": true
+  },
+  {
+    "id": 5,
+    "name": "Paternity Leave",
+    "code": "paternity",
+    "maxDays": 15,
+    "carryForward": false,
+    "isActive": true
+  },
+  {
+    "id": 6,
+    "name": "Causal leave",
+    "code": "CL",
+    "defaultDays": 20,
+    "color": "blue",
+    "description": "Causal leave",
+    "isActive": true,
+    "createdAt": "2025-08-11T04:17:02.321Z"
+  }
+]
